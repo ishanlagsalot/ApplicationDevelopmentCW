@@ -1,0 +1,90 @@
+@page "/view-purchases"
+<h1>View Purchases</h1>
+
+@if (coffeeSales == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Coffee Ordered</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sale in coffeeSales)
+            {
+                <tr>
+                    <td>@sale.Date.ToShortDateString()</td>
+                    <td>@sale.CustomerName</td>
+                    <td>@sale.CoffeeOrdered</td>
+                    <td>@sale.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                Export CSV
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>" FilesChanged="UploadFiles">
+        <ButtonTemplate>
+            <MudButton HtmlTag="label"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                Generate PDF
+            </MudButton>
+        </ButtonTemplate>
+    </MudFileUpload>
+}
+
+@code {
+    private List<CoffeeSale> coffeeSales;
+
+    protected override void OnInitialized()
+    {
+        // Dummy data for coffee sales
+        coffeeSales = new List<CoffeeSale>
+        {
+            new CoffeeSale { Date = DateTime.Now.AddDays(-2), CustomerName = "Samyush Maharjan", CoffeeOrdered = "Cappuccino", TotalPrice = 45.5m },
+            new CoffeeSale { Date = DateTime.Now.AddDays(-1), CustomerName = "Bishal GC", CoffeeOrdered = "Espresso", TotalPrice = 30.0m },
+            new CoffeeSale { Date = DateTime.Now, CustomerName = "Bob Smith", CoffeeOrdered = "Latte", TotalPrice = 50.0m },
+        };
+    }
+
+    public class CoffeeSale
+    {
+        public DateTime Date { get; set; }
+        public string CustomerName { get; set; }
+        public string CoffeeOrdered { get; set; }
+        public decimal TotalPrice { get; set; }
+    }
+
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private void UploadFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        foreach (var file in files)
+        {
+            this.files.Add(file);
+        }
+        //TODO upload the files to the server
+    }
+
+    private void UploadFiles2(IBrowserFile file)
+    {
+        files.Add(file);
+        //TODO upload the files to the server
+    }
+}

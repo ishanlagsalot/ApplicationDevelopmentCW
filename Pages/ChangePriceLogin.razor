@@ -1,0 +1,49 @@
+@page "/change-price-login"
+@layout LoginLayout
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Class="d-flex justify-center">
+        <MudItem xs="12" sm="7">
+            <MudCard Class="d-flex flex-column">
+                <MudCardContent Class="d-flex flex-column justify-center">
+
+                    <MudTextField Label="Password" HelperText="hint: admin" Class="mt-3"
+                    @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                </MudCardContent>
+                <MudCardActions Class="d-flex justify-center">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.body2" Align="Align.Center">
+                Fill out the form correctly to see the success message.
+            </MudText>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+    RegisterAccountForm model = new RegisterAccountForm();
+    bool success;
+
+    public class RegisterAccountForm
+    {
+    
+
+        [Required(ErrorMessage = "Password is required hint:admin")]
+        [StringLength(30, ErrorMessage = "Password must be at least 30 characters")]
+        public string Password { get; set; }
+    }
+
+    private void OnValidSubmit()
+    {
+        success = true; // Placeholder logic for successful login, update this with actual login logic
+        NavigationManager.NavigateTo("/manage-prices");// Redirect to the route defined for MainLayout
+
+    }
+}

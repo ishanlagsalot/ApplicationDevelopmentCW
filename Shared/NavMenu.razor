@@ -1,0 +1,53 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ApplicationDevelopmentCW</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        
+        @*
+        Nav Items
+        *@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="order-coffee">
+                <span class="oi oi-plus" aria-hidden="true"></span> Order Coffee
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="register-membership">
+                <span class="oi oi-plus" aria-hidden="true"></span> Register Membership
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="view-purchases">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> View Purchases
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="change-price-login">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Change Prices
+            </NavLink>
+        </div>
+        
+      
+       
+ 
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

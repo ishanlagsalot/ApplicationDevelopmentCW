@@ -1,0 +1,24 @@
+@page "/manage-prices"
+@using MudBlazor
+<h1>Manage Prices</h1>
+<MudGrid>
+    <MudItem xs="6">
+        <MudSelect T="string" Label="Select Coffee" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="@("Cappuccino")" />
+            <MudSelectItem Value="@("Cafe Latte")" />
+            <MudSelectItem Value="@("Espresso")" />
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="6">
+        <MudNumericField @bind-Value="DecimalValue" Label="Set New Price" Variant="Variant.Outlined" Step=".2M" />
+    </MudItem>
+    <MudItem xs="12">
+        <div class="d-flex justify-center">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Submit</MudButton>
+        </div>
+    </MudItem>
+</MudGrid>
+@code {
+
+    public decimal DecimalValue { get; set; }
+}

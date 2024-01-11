@@ -1,0 +1,30 @@
+﻿﻿@using ApplicationDevelopmentCW.Services;
+@inject ITodoService _todoService;
+@inject IAddCoffeeService _addCoffeeService;
+<EditForm Model="@NewItem" OnSubmit="@ItemAdded">
+    <div style="display: flex; align-items: center; width: 400px;">
+        <div style="margin-right: 10px">Text:</div>
+        <InputText @bind-Value="NewItem.Text" class="form-control" style="margin-right: 10px" id="Item" />
+        <button type="submit" class="btn btn-primary" style="margin-right: 10px">Add</button>
+        <button type="reset" class="btn btn-secondary" style="margin-right: 10px">Clear</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public Action OnItemAdded { get; set; }
+
+    private AddCoffee NewItem = new AddCoffee("");
+
+    private void ItemAdded()
+    {
+        var newItem = new AddCoffee(NewItem.Text);
+        NewItem.Text = "";
+
+        // Call your service method to add the coffee item here
+        _addCoffeeService.Add(newItem);
+
+        // Invoke the callback action
+        OnItemAdded?.Invoke();
+    }
+}

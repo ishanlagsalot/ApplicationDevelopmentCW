@@ -1,0 +1,117 @@
+@page "/order-coffee"
+@using MudBlazor
+@inject ISnackbar Snackbar
+<MudTable Class="table" Items="@coffees">
+    <HeaderContent>
+        <MudTr>
+            <MudTd>AddIns</MudTd>
+            <MudTd>Price</MudTd>
+            <MudTd>Action</MudTd>
+        </MudTr>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTr>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.Price.ToString("C")</MudTd>
+
+            <MudTd>
+
+                <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" @onclick="@(() => Snackbar.Add(@context.Name+" has been added", Severity.Normal))">
+                        @if (!context.IsAdded)
+                        {
+                            <div>Add</div>
+                        }
+                        @if (context.IsAdded)
+                        {
+                            <div>Added</div>
+                        }
+                    </MudButton>
+      
+                
+                @if (context.IsAdded)
+                {
+                    <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary"  OnClick="@(() => ProcessCoffeeOrder(context))">
+                        Added
+                    </MudButton>
+                }
+               
+               
+            </MudTd>
+        </MudTr>
+    </RowTemplate>
+</MudTable>
+<MudGrid>
+    <MudItem xs="6">
+        <MudSelect  T="string" Label="Select Coffee" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="@("Cappuccino")"  />
+            <MudSelectItem Value="@("Cafe Latte")"  />
+            <MudSelectItem Value="@("Espresso")"  />
+        </MudSelect>
+    </MudItem>
+    <MudItem xs="12" sm="7">
+        <MudCard>
+            <MudCardContent>
+                <MudTextField T="string" Label="Customer Name" />
+
+            </MudCardContent>
+
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12">
+        <div class="d-flex justify-center">
+            <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" @onclick="@(() => Snackbar.Add("Your order has been Placed", Severity.Success))"/>
+        </div>
+    </MudItem>
+</MudGrid>
+
+@code {
+    public record Coffee(string Name, decimal Price, bool IsAdded);
+    public record Addins(string Name, decimal Price);
+    public List<Coffee> coffees;
+    public List<Addins> addins;
+
+    protected override void OnInitialized()
+    {
+        coffees = new List<Coffee>
+        {
+            new Coffee("Honey", 2.5m, false),
+            new Coffee("Ginger", 3.0m, false),
+            new Coffee("Chocolate", 3.5m, false),
+            new Coffee("Icecream", 3.0m, false),
+            new Coffee("Cinnamon", 2.5m, false),
+        };
+        addins = new List<Addins>
+        {
+            new Addins("Honey", 2.5m),
+            new Addins("Ginger", 3.0m),
+            new Addins("Chocolate", 3.5m),
+            new Addins("Protein SHake", 3.0m),
+        };
+    }
+
+    private int counter = 0;
+
+    private void IncrementCounter()
+    {
+        counter++;
+    }
+
+    private void DecrementCounter()
+    {
+        if (counter > 0)
+            counter--;
+    }
+
+    private void ProcessCoffeeOrder(Coffee selectedCoffee)
+    {
+        // Logic to process the coffee order goes here
+        Console.WriteLine($"Ordered: {selectedCoffee.Name}");
+        selectedCoffee = selectedCoffee with { IsAdded = true };
+        counter = 0;
+
+        // Update the list to trigger a re-render
+        StateHasChanged();
+    }
+     public bool Basic_CheckBox2 { get; set; } = false;
+}
